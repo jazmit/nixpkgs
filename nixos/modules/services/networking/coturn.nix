@@ -316,10 +316,10 @@ in {
 
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${pkgs.coturn}/bin/turnserver -c ${configFile}";
+        ExecStart = "${pkgs.coturn}/bin/turnserver --proc-user turnserver -c ${configFile}";
         RuntimeDirectory = "turnserver";
-        User = "turnserver";
-        Group = "turnserver";
+        User = "root";
+        Group = "root";
         Restart = "on-abort";
       };
     };
