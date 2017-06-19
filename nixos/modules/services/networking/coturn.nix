@@ -316,10 +316,16 @@ in {
 
       serviceConfig = {
         Type = "simple";
-        ExecStart = "${pkgs.coturn}/bin/turnserver --proc-user turnserver -c ${configFile}";
+        ExecStart = "${pkgs.coturn}/bin/turnserver -c ${configFile}";
+		AmbientCapabilities =
+          mkIf (
+            cfg.listening-port < 1024 || cfg.alt-listening-port < 1024
+            || cfg.tls-listening-port < 1024 || cfg.alt-tls-listening-port < 1024
+          ) "cap_net_bind_service";
         RuntimeDirectory = "turnserver";
-        User = "root";
-        Group = "root";
+        User = "turnserver";
+        Group = "turnserver";
+        AmbientCapabilities = "cap_net_bind_service";
         Restart = "on-abort";
       };
     };
